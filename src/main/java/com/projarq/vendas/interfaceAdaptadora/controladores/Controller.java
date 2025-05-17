@@ -34,7 +34,7 @@ public class Controller {
     @GetMapping("")
     @CrossOrigin(origins = "*")
     public String welcomeMessage(){
-        return("Bem vindo as lojas ACME");
+        return("Bem vindo as lojas Projarq!");
     }
 
     @GetMapping("produtosDisponiveis")
@@ -56,10 +56,10 @@ public class Controller {
     }
 
     //chegada de produtos
-    @PostMapping("produtos/chegada")
+    @GetMapping("produtos/chegada")
     @CrossOrigin(origins = "*")
-    public void chegadaProdutos(@RequestBody List<ProdutoDTO> produtos){
-        //adicionar os produtos ao estoque
+    public void chegadaProdutos(){
+        //retornar produtos novos 
     }
 
     //retornar a quantidade disponível de todos os itens em estoque
