@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projarq.vendas.aplicacao.casosDeUso.CriaOrcamentoUC;
+import com.projarq.vendas.aplicacao.casosDeUso.DispListaUC;
 import com.projarq.vendas.aplicacao.casosDeUso.EfetivaOrcamentoUC;
 import com.projarq.vendas.aplicacao.casosDeUso.ProdutosDisponiveisUC;
 import com.projarq.vendas.aplicacao.dtos.ItemPedidoDTO;
@@ -21,6 +22,7 @@ public class Controller {
     private ProdutosDisponiveisUC produtosDisponiveis;
     private CriaOrcamentoUC criaOrcamento;
     private EfetivaOrcamentoUC efetivaOrcamento;
+    private DispListaUC dispListaUC;
 
     //@Autowired
     public Controller(ProdutosDisponiveisUC produtosDisponiveis,
@@ -63,7 +65,7 @@ public class Controller {
     }
 
     //retornar a quantidade disponível de todos os itens em estoque
-    @GetMapping("produtos/estoque")
+    @GetMapping("estoque")
     @CrossOrigin(origins = "*")
     public List<ProdutoDTO> produtosEstoque(){
         //retornar a lista de produtos em estoque
@@ -71,11 +73,11 @@ public class Controller {
     }
 
     //retornar a quantidade disponível para uma lista de itens em estoque
-    @GetMapping("produtos/estoqueLista")
+    @GetMapping("estoqueLista")
     @CrossOrigin(origins = "*")
-    public ProdutoDTO produtosEstoque(@RequestBody List<ProdutoDTO> produtos){
+    public List<ProdutoDTO> produtosEstoque(@RequestBody List<ProdutoDTO> produtos){
         //retornar a quantidade disponível do produto
-        return null;
+        return dispListaUC.run(produtos);
     }
 
     //Retornar a lista de orçamentos efetivados em um determinado período (informar data inicial e data final)
