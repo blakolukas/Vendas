@@ -54,4 +54,35 @@ public class Controller {
     public OrcamentoDTO efetivaOrcamento(@PathVariable(value="id") long idOrcamento){
         return efetivaOrcamento.run(idOrcamento);
     }
+
+    //chegada de produtos
+    @PostMapping("produtos/chegada")
+    @CrossOrigin(origins = "*")
+    public void chegadaProdutos(@RequestBody List<ProdutoDTO> produtos){
+        //adicionar os produtos ao estoque
+    }
+
+    //retornar a quantidade disponível de todos os itens em estoque
+    @GetMapping("produtos/estoque")
+    @CrossOrigin(origins = "*")
+    public List<ProdutoDTO> produtosEstoque(){
+        //retornar a lista de produtos em estoque
+        return null;
+    }
+
+    //retornar a quantidade disponível para uma lista de itens em estoque
+    @GetMapping("produtos/estoqueLista")
+    @CrossOrigin(origins = "*")
+    public ProdutoDTO produtosEstoque(@RequestBody List<ProdutoDTO> produtos){
+        //retornar a quantidade disponível do produto
+        return null;
+    }
+
+    //Retornar a lista de orçamentos efetivados em um determinado período (informar data inicial e data final)
+    @GetMapping("orcamentos/periodoPeriodo")
+    @CrossOrigin(origins = "*")
+    public List<OrcamentoDTO> orcamentosPeriodo(@RequestBody String dataInicial, String dataFinal){
+        //retornar a lista de orçamentos efetivados no período
+        return null;
+    }
 }
