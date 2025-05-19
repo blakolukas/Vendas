@@ -12,6 +12,7 @@ public class OrcamentoModel {
     private double desconto;
     private double custoConsumidor;
     private boolean efetivado;
+    private String estado;
     private LocalDateTime dataCriacao;
 
     public OrcamentoModel(long id) {
@@ -87,5 +88,13 @@ public class OrcamentoModel {
 
     public LocalDateTime getDataCriacao() {
         return dataCriacao;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 }

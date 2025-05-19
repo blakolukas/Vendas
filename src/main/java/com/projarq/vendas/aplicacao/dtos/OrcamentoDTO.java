@@ -1,5 +1,6 @@
 package com.projarq.vendas.aplicacao.dtos;
 
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,6 +17,14 @@ public class OrcamentoDTO {
     private double desconto;
     private double custoConsumidor;
     private boolean efetivado;
+    private String estado;
+    private LocalDateTime dataCriacao;
+
+
+
+    public LocalDateTime getDataCriacao() {
+        return dataCriacao;
+    }
 
     public OrcamentoDTO(OrcamentoModel orcamento) {
         this.id = orcamento.getId();
@@ -23,6 +32,8 @@ public class OrcamentoDTO {
         this.imposto = orcamento.getImposto();
         this.desconto = orcamento.getDesconto();
         this.custoConsumidor = orcamento.getCustoConsumidor();
+        this.estado = orcamento.getEstado();
+        this.dataCriacao = orcamento.getDataCriacao();
         if (orcamento.isEfetivado()) this.efetivado = true;
         else this.efetivado = false;
         itens = new LinkedList<>();
@@ -61,6 +72,14 @@ public class OrcamentoDTO {
 
     public void efetiva(){
         efetivado = true;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public static OrcamentoDTO fromModel(OrcamentoModel orcamento){
