@@ -6,15 +6,21 @@ import java.util.List;
 
 public class PedidoModel {
     private long id;
+    private String estado;
     private List<ItemPedidoModel> itens;
 
-    public PedidoModel(long id) {
+    public PedidoModel(long id, String estado) {
         this.id = id;
+        this.estado = estado;
         this.itens = new LinkedList<>();
     }
 
     public long getId() {
         return id;
+    }
+
+    public String getEstado() {
+        return estado;
     }
 
     public List<ItemPedidoModel> getItens() {

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.projarq.vendas.dominio.entidades.EstadoDesconto;
 import com.projarq.vendas.dominio.entidades.ItemPedidoModel;
 import com.projarq.vendas.dominio.entidades.OrcamentoModel;
 import com.projarq.vendas.dominio.entidades.PedidoModel;
@@ -37,11 +38,15 @@ public class ServicoDeVendas {
             .mapToDouble(it->it.getProduto().getPrecoUnitario()*it.getQuantidade())
             .sum();
         novoOrcamento.setImposto(custoItens * 0.1);
-        if (novoOrcamento.getItens().size() > 5){
-                novoOrcamento.setDesconto(custoItens * 0.05);
-            }else{
-                novoOrcamento.setDesconto(0.0);
-            }
+        // Aplica desconto por estado usando enum
+        double desconto = 0.0;
+        try {
+            EstadoDesconto estado = EstadoDesconto.valueOf(pedido.getEstado());
+            desconto = estado.calcularDesconto(custoItens, pedido);
+        } catch (IllegalArgumentException e) {
+            desconto = 0.0; // Estado não cadastrado, sem desconto
+        }
+        novoOrcamento.setDesconto(desconto);
         novoOrcamento.setCustoConsumidor(custoItens + novoOrcamento.getImposto() - novoOrcamento.getDesconto());
         return this.orcamentos.cadastra(novoOrcamento);
     }
@@ -58,6 +63,12 @@ public class ServicoDeVendas {
                 break;
             }
         }
+        // Verifica se o orçamento já tem menos de 21 dias
+        if (orcamento.getDataCriacao().toLocalDate().isBefore(java.time.LocalDate.now().minusDays(21))) {
+            ok = false;
+        }
+
+
         // Se tem quantidade para todos os itens, da baixa no estoque para todos
         if (ok) {
             for (ItemPedidoModel itemPedido:orcamento.getItens()) {
