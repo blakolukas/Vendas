@@ -46,6 +46,7 @@ public class ServicoDeVendas {
         } catch (IllegalArgumentException e) {
             desconto = 0.0; // Estado não cadastrado, sem desconto
         }
+        novoOrcamento.setEstado(pedido.getEstado());
         novoOrcamento.setDesconto(desconto);
         novoOrcamento.setCustoConsumidor(custoItens + novoOrcamento.getImposto() - novoOrcamento.getDesconto());
         return this.orcamentos.cadastra(novoOrcamento);
