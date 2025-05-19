@@ -36,13 +36,26 @@ public class ServicoDeVendas {
         double custoItens = novoOrcamento.getItens().stream()
             .mapToDouble(it->it.getProduto().getPrecoUnitario()*it.getQuantidade())
             .sum();
-        novoOrcamento.setImposto(custoItens * 0.1);
-        if (novoOrcamento.getItens().size() > 5){
-                novoOrcamento.setDesconto(custoItens * 0.05);
-            }else{
-                novoOrcamento.setDesconto(0.0);
-            }
-        novoOrcamento.setCustoConsumidor(custoItens + novoOrcamento.getImposto() - novoOrcamento.getDesconto());
+        novoOrcamento.setCustoItens(custoItens); // Corrige: seta o custoItens no modelo
+        
+        // Aplica imposto por estado usando enum
+        double imposto = 0.0;
+        try {
+            EstadoImposto estado = EstadoImposto.valueOf(pedido.getEstado());
+            imposto = estado.calcularImposto(custoItens, pedido);
+        } catch (IllegalArgumentException e) {
+            imposto = custoItens * 0.1;
+        }
+        novoOrcamento.setEstado(pedido.getEstado());
+        novoOrcamento.setImposto(imposto);
+
+        // Estratégias de desconto
+        DescontoStrategy descontoPorItem = new DescontoPorItemStrategy();
+        DescontoStrategy descontoPorTotalItens = new DescontoPorTotalItensStrategy();
+        double desconto = descontoPorItem.calcularDesconto(novoOrcamento, pedido) + descontoPorTotalItens.calcularDesconto(novoOrcamento, pedido);
+
+        novoOrcamento.setDesconto(desconto);
+        novoOrcamento.setCustoConsumidor(custoItens + novoOrcamento.getImposto() - desconto);
         return this.orcamentos.cadastra(novoOrcamento);
     }
  
@@ -58,6 +71,13 @@ public class ServicoDeVendas {
                 break;
             }
         }
+        // Verifica se o orçamento já tem menos de 21 dias
+        if (orcamento.getDataCriacao().toLocalDate().isBefore(java.time.LocalDate.now().minusDays(21))) {
+            ok = false;
+            System.out.println("Orçamento com mais de 21 dias não pode ser efetivado.");
+        }
+
+
         // Se tem quantidade para todos os itens, da baixa no estoque para todos
         if (ok) {
             for (ItemPedidoModel itemPedido:orcamento.getItens()) {

@@ -1,5 +1,6 @@
 package com.projarq.vendas.dominio.entidades;
 
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,16 +12,20 @@ public class OrcamentoModel {
     private double desconto;
     private double custoConsumidor;
     private boolean efetivado;
+    private String estado;
+    private LocalDateTime dataCriacao;
 
     public OrcamentoModel(long id) {
         this.id = id;
         this.itens = new LinkedList<>();
         this.efetivado = false;
+        this.dataCriacao = LocalDateTime.now();
     }
 
     public OrcamentoModel(){
         this.itens = new LinkedList<>();
         this.efetivado = false;
+        this.dataCriacao = LocalDateTime.now();
     }
 
     public void addItensPedido(PedidoModel pedido){
@@ -79,5 +84,21 @@ public class OrcamentoModel {
 
     public void efetiva(){
         efetivado = true;
+    }
+
+    public LocalDateTime getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public void setDataCriacao(LocalDateTime dataCriacao) {
+        this.dataCriacao = dataCriacao;
     }
 }
