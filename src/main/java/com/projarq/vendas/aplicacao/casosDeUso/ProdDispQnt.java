@@ -18,7 +18,7 @@ public class ProdDispQnt {
 
     public List<ProdutoNomeQtdDTO> run(){
         return servicoEstoque.produtosDisponiveis().stream()
-            .map(p -> new ProdutoNomeQtdDTO(p.getDescricao(), servicoEstoque.qtdadeEmEstoque(p.getId())))
+            .map(p -> new ProdutoNomeQtdDTO(p.getId(), p.getDescricao(), servicoEstoque.qtdadeEmEstoque(p.getId())))
             .toList();
     }
     

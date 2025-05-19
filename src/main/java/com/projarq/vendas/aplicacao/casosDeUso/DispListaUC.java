@@ -22,4 +22,11 @@ public class DispListaUC {
             .map(ProdutoDTO::fromModel)
             .toList();
     }
+
+    public List<String> run() {
+        return servicoEstoque.produtosDisponiveis().stream()
+            .map(ProdutoDTO::fromModel)
+            .map(ProdutoDTO::getDescricao)
+            .toList();
+    }
 }

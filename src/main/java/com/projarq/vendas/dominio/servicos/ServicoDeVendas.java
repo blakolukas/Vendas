@@ -36,6 +36,7 @@ public class ServicoDeVendas {
         double custoItens = novoOrcamento.getItens().stream()
             .mapToDouble(it->it.getProduto().getPrecoUnitario()*it.getQuantidade())
             .sum();
+        novoOrcamento.setCustoItens(custoItens); // Corrige: seta o custoItens no modelo
         
         // Aplica imposto por estado usando enum
         double imposto = 0.0;

@@ -14,6 +14,7 @@ import com.projarq.vendas.aplicacao.casosDeUso.CriaOrcamentoUC;
 import com.projarq.vendas.aplicacao.casosDeUso.DispListaUC;
 import com.projarq.vendas.aplicacao.casosDeUso.EfetivaOrcamentoUC;
 import com.projarq.vendas.aplicacao.casosDeUso.ListarOrcamentosEfetivadosUC;
+import com.projarq.vendas.aplicacao.casosDeUso.ProdDispQnt;
 import com.projarq.vendas.aplicacao.casosDeUso.ProdutosDisponiveisUC;
 import com.projarq.vendas.aplicacao.dtos.IntervaloDatasDTO;
 import com.projarq.vendas.aplicacao.dtos.NovoOrcamentoRequest;
@@ -28,25 +29,34 @@ public class Controller {
     private CriaOrcamentoUC criaOrcamento;
     private EfetivaOrcamentoUC efetivaOrcamento;
     private DispListaUC dispListaUC;
+    private ProdDispQnt prodDispQnt;
 
     //@Autowired
     public Controller(ProdutosDisponiveisUC produtosDisponiveis,
                       CriaOrcamentoUC criaOrcamento,
                       EfetivaOrcamentoUC efetivaOrcamento,
                       DispListaUC dispListaUC,
-                      ListarOrcamentosEfetivadosUC listarOrcamentosEfetivados){
+                      ListarOrcamentosEfetivadosUC listarOrcamentosEfetivados,
+                      ProdDispQnt prodDispQnt){
 
         this.produtosDisponiveis = produtosDisponiveis;
         this.criaOrcamento = criaOrcamento;
         this.efetivaOrcamento = efetivaOrcamento;
         this.dispListaUC = dispListaUC;
         this.listarOrcamentosEfetivados = listarOrcamentosEfetivados;
+        this.prodDispQnt = prodDispQnt;
     }
 
     @GetMapping("")
     @CrossOrigin(origins = "*")
     public String welcomeMessage(){
         return("Bem vindo as lojas Projarq!");
+    }
+
+    @GetMapping("produtos")
+    @CrossOrigin(origins = "*")
+    public List<String> produtos(){
+        return dispListaUC.run();
     }
 
     @GetMapping("estoque")
