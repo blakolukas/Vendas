@@ -16,12 +16,12 @@ public class ServicoDeVendas {
     private final IOrcamentoRepositorio orcamentos;
     private final IEstoqueRepositorio estoque;
 
-    //@Autowired
-    public ServicoDeVendas(IOrcamentoRepositorio orcamentos,IEstoqueRepositorio estoque){
+    // @Autowired
+    public ServicoDeVendas(IOrcamentoRepositorio orcamentos, IEstoqueRepositorio estoque) {
         this.orcamentos = orcamentos;
         this.estoque = estoque;
     }
-     
+
     public List<ProdutoModel> produtosDisponiveis() {
         return estoque.todosComEstoque();
     }
@@ -32,26 +32,20 @@ public class ServicoDeVendas {
 
     public OrcamentoModel criaOrcamento(PedidoModel pedido) {
         var novoOrcamento = new OrcamentoModel();
-        novoOrcamento.addItensPedido(pedido);
-        double custoItens = novoOrcamento.getItens().stream()
-            .mapToDouble(it->it.getProduto().getPrecoUnitario()*it.getQuantidade())
-            .sum();
-        novoOrcamento.setImposto(custoItens * 0.1);
-        if (novoOrcamento.getItens().size() > 5){
-                novoOrcamento.setDesconto(custoItens * 0.05);
-            }else{
-                novoOrcamento.setDesconto(0.0);
-            }
-        novoOrcamento.setCustoConsumidor(custoItens + novoOrcamento.getImposto() - novoOrcamento.getDesconto());
+        novoOrcamento.setCliente(pedido.getCliente());
+        novoOrcamento.setEstado(pedido.getEstado());
+        novoOrcamento.setPais(pedido.getPais());
+        novoOrcamento.setItens(pedido.getItens());
+        novoOrcamento.calculaTotais(); // calcula valorItens, impostos, desconto e valorFinal
         return this.orcamentos.cadastra(novoOrcamento);
     }
- 
+
     public OrcamentoModel efetivaOrcamento(long id) {
         // Recupera o orçamento
         var orcamento = this.orcamentos.recuperaPorId(id);
         var ok = true;
         // Verifica se tem quantidade em estoque para todos os itens
-        for (ItemPedidoModel itemPedido:orcamento.getItens()) {
+        for (ItemPedidoModel itemPedido : orcamento.getItens()) {
             int qtdade = estoque.quantidadeEmEstoque(itemPedido.getProduto().getId());
             if (qtdade < itemPedido.getQuantidade()) {
                 ok = false;
@@ -60,7 +54,7 @@ public class ServicoDeVendas {
         }
         // Se tem quantidade para todos os itens, da baixa no estoque para todos
         if (ok) {
-            for (ItemPedidoModel itemPedido:orcamento.getItens()) {
+            for (ItemPedidoModel itemPedido : orcamento.getItens()) {
                 int qtdade = estoque.quantidadeEmEstoque(itemPedido.getProduto().getId());
                 if (qtdade >= itemPedido.getQuantidade()) {
                     estoque.baixaEstoque(itemPedido.getProduto().getId(), itemPedido.getQuantidade());
@@ -69,7 +63,8 @@ public class ServicoDeVendas {
             // Marca o orcamento como efetivado
             orcamentos.marcaComoEfetivado(id);
         }
-        // Retorna o orçamento marcado como efetivado ou não conforme disponibilidade do estoque
+        // Retorna o orçamento marcado como efetivado ou não conforme disponibilidade do
+        // estoque
         return orcamentos.recuperaPorId(id);
     }
 }

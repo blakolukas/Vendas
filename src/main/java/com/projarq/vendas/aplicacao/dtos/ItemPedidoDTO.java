@@ -1,8 +1,8 @@
 package com.projarq.vendas.aplicacao.dtos;
 
 public class ItemPedidoDTO {
-    private long idProduto;
-    private int qtdade;
+    private final long idProduto;
+    private final int qtdade;
 
     public ItemPedidoDTO(long idProduto, int qtdade) {
         this.idProduto = idProduto;
@@ -20,5 +20,5 @@ public class ItemPedidoDTO {
     @Override
     public String toString() {
         return "ItemPedidoDTO [idProduto=" + idProduto + ", qtdade=" + qtdade + "]";
-    }    
+    }
 }

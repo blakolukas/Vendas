@@ -1,8 +1,10 @@
 package com.projarq.vendas.dominio.entidades;
 
-public class ItemDeEstoqueModel{
-    private long id;
-    private ProdutoModel produto;
+public class ItemDeEstoqueModel {
+
+    private final long id;
+    private final ProdutoModel produto;
+
     private int quantidade;
     private int estoqueMin;
     private int estoqueMax;
