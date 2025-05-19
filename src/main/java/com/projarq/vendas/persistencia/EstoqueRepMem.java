@@ -1,4 +1,4 @@
-package com.bcopstein.sistvendas.persistencia;
+package com.projarq.vendas.persistencia;
 
 import java.util.LinkedList;
 import java.util.List;
