@@ -15,6 +15,7 @@ public class ProdutoRepMem  implements IProdutoRepositorio{
     private List<ProdutoModel> produtos;
 
     public ProdutoRepMem(){
+        System.out.println("ProdutoRepMem inicializado");
         produtos = new LinkedList<>();
         produtos.add(new ProdutoModel(10,"Televisor",2000.0));
         produtos.add(new ProdutoModel(20,"Geladeira",3500.0));

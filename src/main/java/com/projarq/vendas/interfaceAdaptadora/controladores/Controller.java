@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import com.projarq.vendas.aplicacao.casosDeUso.CriaOrcamentoUC;
 import com.projarq.vendas.aplicacao.casosDeUso.DispListaUC;
 import com.projarq.vendas.aplicacao.casosDeUso.EfetivaOrcamentoUC;
@@ -17,6 +18,8 @@ import com.projarq.vendas.aplicacao.casosDeUso.ProdutosDisponiveisUC;
 import com.projarq.vendas.aplicacao.dtos.ItemPedidoDTO;
 import com.projarq.vendas.aplicacao.dtos.OrcamentoDTO;
 import com.projarq.vendas.aplicacao.dtos.ProdutoDTO;
+import com.projarq.vendas.aplicacao.dtos.NovoOrcamentoRequest;
+
 
 @RestController
 public class Controller {
@@ -46,13 +49,14 @@ public class Controller {
     @CrossOrigin(origins = "*")
     public List<ProdutoDTO> produtosDisponiveis(){
         return produtosDisponiveis.run();
-    }    
+    }
 
     @PostMapping("novoOrcamento")
     @CrossOrigin(origins = "*")
-    public OrcamentoDTO novoOrcamento(@RequestBody List<ItemPedidoDTO> itens, @RequestBody String estado){
-        return criaOrcamento.run(itens, estado);
+    public OrcamentoDTO novoOrcamento(@RequestBody NovoOrcamentoRequest request) {
+        return criaOrcamento.run(request.getItens(), request.getEstado());
     }
+
 
     @GetMapping("efetivaOrcamento/{id}")
     @CrossOrigin(origins = "*")
