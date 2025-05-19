@@ -2,6 +2,8 @@ package com.projarq.vendas.interfaceAdaptadora.controladores;
 
 import java.util.List;
 
+import com.projarq.vendas.aplicacao.casosDeUso.*;
+import com.projarq.vendas.aplicacao.dtos.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,18 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
-import com.projarq.vendas.aplicacao.casosDeUso.CriaOrcamentoUC;
-import com.projarq.vendas.aplicacao.casosDeUso.DispListaUC;
-import com.projarq.vendas.aplicacao.casosDeUso.EfetivaOrcamentoUC;
-import com.projarq.vendas.aplicacao.casosDeUso.ProdutosDisponiveisUC;
-import com.projarq.vendas.aplicacao.dtos.ItemPedidoDTO;
-import com.projarq.vendas.aplicacao.dtos.OrcamentoDTO;
-import com.projarq.vendas.aplicacao.dtos.ProdutoDTO;
-import com.projarq.vendas.aplicacao.dtos.NovoOrcamentoRequest;
-
-
 @RestController
 public class Controller {
+    private ListarOrcamentosEfetivadosUC listarOrcamentosEfetivados;
     private ProdutosDisponiveisUC produtosDisponiveis;
     private CriaOrcamentoUC criaOrcamento;
     private EfetivaOrcamentoUC efetivaOrcamento;
@@ -32,11 +25,14 @@ public class Controller {
     public Controller(ProdutosDisponiveisUC produtosDisponiveis,
                       CriaOrcamentoUC criaOrcamento,
                       EfetivaOrcamentoUC efetivaOrcamento,
-                      DispListaUC dispListaUC){
+                      DispListaUC dispListaUC,
+                      ListarOrcamentosEfetivadosUC listarOrcamentosEfetivados){
+
         this.produtosDisponiveis = produtosDisponiveis;
         this.criaOrcamento = criaOrcamento;
         this.efetivaOrcamento = efetivaOrcamento;
         this.dispListaUC = dispListaUC;
+        this.listarOrcamentosEfetivados = listarOrcamentosEfetivados;
     }
 
     @GetMapping("")
@@ -79,10 +75,10 @@ public class Controller {
     }
 
     //Retornar a lista de orçamentos efetivados em um determinado período (informar data inicial e data final)
-    @GetMapping("orcamentos/periodoPeriodo")
+    @PostMapping("orcamentos/periodoPeriodo")
     @CrossOrigin(origins = "*")
-    public List<OrcamentoDTO> orcamentosPeriodo(@RequestBody String dataInicial, String dataFinal){
-        //retornar a lista de orçamentos efetivados no período
-        return null;
+    public List<OrcamentoDTO> orcamentosPeriodo(@RequestBody IntervaloDatasDTO datas) {
+        return listarOrcamentosEfetivados.run(datas);
     }
+
 }
