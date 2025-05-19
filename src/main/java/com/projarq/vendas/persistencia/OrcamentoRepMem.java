@@ -57,7 +57,7 @@ public class OrcamentoRepMem implements IOrcamentoRepositorio{
         orcamentos.add(orcamento);
 
         // Ajusta contador de orcamentos
-        OrcamentoRepMem.idCount += 2;
+        OrcamentoRepMem.idCount += 1;
     }
 
     @Override
