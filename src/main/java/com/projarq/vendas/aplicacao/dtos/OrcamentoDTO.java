@@ -20,12 +20,6 @@ public class OrcamentoDTO {
     private String estado;
     private LocalDateTime dataCriacao;
 
-
-
-    public LocalDateTime getDataCriacao() {
-        return dataCriacao;
-    }
-
     public OrcamentoDTO(OrcamentoModel orcamento) {
         this.id = orcamento.getId();
         this.custoItens = orcamento.getCustoItens();
@@ -84,5 +78,13 @@ public class OrcamentoDTO {
 
     public static OrcamentoDTO fromModel(OrcamentoModel orcamento){
         return new OrcamentoDTO(orcamento);
+    }
+
+    public void setDataCriacao(LocalDateTime dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
+
+    public LocalDateTime getDataCriacao() {
+        return dataCriacao;
     }
 }

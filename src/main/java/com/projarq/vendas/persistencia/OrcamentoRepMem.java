@@ -1,5 +1,6 @@
 package com.projarq.vendas.persistencia;
 
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,9 +26,9 @@ public class OrcamentoRepMem implements IOrcamentoRepositorio{
         this.orcamentos = new LinkedList<>();
 
         // Cria Orcamento
-        OrcamentoModel orcamento = new OrcamentoModel(1);
-        //TODO: criar pedido com estado
-        PedidoModel pedido = new PedidoModel(1, null);
+        OrcamentoModel orcamento = new OrcamentoModel(0);
+        PedidoModel pedido = new PedidoModel(1, "RS");
+        orcamento.setEstado(pedido.getEstado());
         ProdutoModel p = produtos.consultaPorId(10);
         ItemPedidoModel item = new ItemPedidoModel(p, 2);
         pedido.addItem(item);
@@ -35,12 +36,13 @@ public class OrcamentoRepMem implements IOrcamentoRepositorio{
         item = new ItemPedidoModel(p, 3);
         pedido.addItem(item);
         orcamento.addItensPedido(pedido);
+        orcamento.setDataCriacao(LocalDateTime.of(1999, 1, 1, 0, 0));
         orcamentos.add(orcamento);
 
         // Cria Orcamento
-        orcamento = new OrcamentoModel(2);
-        //TODO: criar pedido com estado
-        pedido = new PedidoModel(2, null);
+        orcamento = new OrcamentoModel(1);
+        pedido = new PedidoModel(2, "SP");
+        orcamento.setEstado(pedido.getEstado());
         p = produtos.consultaPorId(40);
         item = new ItemPedidoModel(p,1);
         pedido.addItem(item);
@@ -51,6 +53,7 @@ public class OrcamentoRepMem implements IOrcamentoRepositorio{
         item = new ItemPedidoModel(p, 1);
         pedido.addItem(item);
         orcamento.addItensPedido(pedido);
+        orcamento.setDataCriacao(LocalDateTime.of(2001, 1, 1, 0, 0));
         orcamentos.add(orcamento);
 
         // Ajusta contador de orcamentos

@@ -97,4 +97,8 @@ public class OrcamentoModel {
     public void setEstado(String estado) {
         this.estado = estado;
     }
+
+    public void setDataCriacao(LocalDateTime dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
 }
