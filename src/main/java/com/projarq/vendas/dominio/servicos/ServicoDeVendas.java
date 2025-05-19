@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.projarq.vendas.dominio.entidades.EstadoDesconto;
 import com.projarq.vendas.dominio.entidades.ItemPedidoModel;
 import com.projarq.vendas.dominio.entidades.OrcamentoModel;
 import com.projarq.vendas.dominio.entidades.PedidoModel;
@@ -37,18 +36,25 @@ public class ServicoDeVendas {
         double custoItens = novoOrcamento.getItens().stream()
             .mapToDouble(it->it.getProduto().getPrecoUnitario()*it.getQuantidade())
             .sum();
-        novoOrcamento.setImposto(custoItens * 0.1);
-        // Aplica desconto por estado usando enum
-        double desconto = 0.0;
+        
+        // Aplica imposto por estado usando enum
+        double imposto = 0.0;
         try {
-            EstadoDesconto estado = EstadoDesconto.valueOf(pedido.getEstado());
-            desconto = estado.calcularDesconto(custoItens, pedido);
+            EstadoImposto estado = EstadoImposto.valueOf(pedido.getEstado());
+            imposto = estado.calcularImposto(custoItens, pedido);
         } catch (IllegalArgumentException e) {
-            desconto = 0.0; // Estado não cadastrado, sem desconto
+            imposto = custoItens * 0.1;
         }
         novoOrcamento.setEstado(pedido.getEstado());
+        novoOrcamento.setImposto(imposto);
+
+        // Estratégias de desconto
+        DescontoStrategy descontoPorItem = new DescontoPorItemStrategy();
+        DescontoStrategy descontoPorTotalItens = new DescontoPorTotalItensStrategy();
+        double desconto = descontoPorItem.calcularDesconto(novoOrcamento, pedido) + descontoPorTotalItens.calcularDesconto(novoOrcamento, pedido);
+
         novoOrcamento.setDesconto(desconto);
-        novoOrcamento.setCustoConsumidor(custoItens + novoOrcamento.getImposto() - novoOrcamento.getDesconto());
+        novoOrcamento.setCustoConsumidor(custoItens + novoOrcamento.getImposto() - desconto);
         return this.orcamentos.cadastra(novoOrcamento);
     }
  
@@ -67,6 +73,7 @@ public class ServicoDeVendas {
         // Verifica se o orçamento já tem menos de 21 dias
         if (orcamento.getDataCriacao().toLocalDate().isBefore(java.time.LocalDate.now().minusDays(21))) {
             ok = false;
+            System.out.println("Orçamento com mais de 21 dias não pode ser efetivado.");
         }
 
 
