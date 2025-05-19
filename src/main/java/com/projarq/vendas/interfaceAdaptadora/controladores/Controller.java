@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projarq.vendas.aplicacao.casosDeUso.CriaOrcamentoUC;
@@ -27,10 +28,12 @@ public class Controller {
     //@Autowired
     public Controller(ProdutosDisponiveisUC produtosDisponiveis,
                       CriaOrcamentoUC criaOrcamento,
-                      EfetivaOrcamentoUC efetivaOrcamento){
+                      EfetivaOrcamentoUC efetivaOrcamento,
+                      DispListaUC dispListaUC){
         this.produtosDisponiveis = produtosDisponiveis;
         this.criaOrcamento = criaOrcamento;
         this.efetivaOrcamento = efetivaOrcamento;
+        this.dispListaUC = dispListaUC;
     }
 
     @GetMapping("")
@@ -39,7 +42,7 @@ public class Controller {
         return("Bem vindo as lojas Projarq!");
     }
 
-    @GetMapping("produtosDisponiveis")
+    @GetMapping("estoque")
     @CrossOrigin(origins = "*")
     public List<ProdutoDTO> produtosDisponiveis(){
         return produtosDisponiveis.run();
@@ -64,20 +67,11 @@ public class Controller {
         //retornar produtos novos 
     }
 
-    //retornar a quantidade disponível de todos os itens em estoque
-    @GetMapping("estoque")
-    @CrossOrigin(origins = "*")
-    public List<ProdutoDTO> produtosEstoque(){
-        //retornar a lista de produtos em estoque
-        return null;
-    }
-
     //retornar a quantidade disponível para uma lista de itens em estoque
     @GetMapping("estoqueLista")
     @CrossOrigin(origins = "*")
-    public List<ProdutoDTO> produtosEstoque(@RequestBody List<ProdutoDTO> produtos){
-        //retornar a quantidade disponível do produto
-        return dispListaUC.run(produtos);
+    public List<ProdutoDTO> produtosEstoque(@RequestParam List<Long> ids){
+        return dispListaUC.run(ids);
     }
 
     //Retornar a lista de orçamentos efetivados em um determinado período (informar data inicial e data final)

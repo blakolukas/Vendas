@@ -2,9 +2,12 @@ package com.projarq.vendas.aplicacao.casosDeUso;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.projarq.vendas.aplicacao.dtos.ProdutoNomeQtdDTO;
 import com.projarq.vendas.dominio.servicos.ServicoDeEstoque;
 
+@Component
 public class ProdDispQnt {
     private ServicoDeEstoque servicoEstoque;
 
