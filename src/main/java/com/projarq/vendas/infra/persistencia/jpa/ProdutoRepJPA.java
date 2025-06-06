@@ -1,4 +1,4 @@
-package com.projarq.vendas.interfaceAdaptadora.repositorios.implemRepositorios;
+package com.projarq.vendas.infra.persistencia.jpa;
 
 import java.util.LinkedList;
 import java.util.List;
