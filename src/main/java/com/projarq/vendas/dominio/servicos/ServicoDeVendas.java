@@ -9,7 +9,7 @@ import com.projarq.vendas.dominio.entidades.OrcamentoModel;
 import com.projarq.vendas.dominio.entidades.PedidoModel;
 import com.projarq.vendas.dominio.entidades.ProdutoModel;
 import com.projarq.vendas.dominio.interfRepositorios.IEstoqueRepositorio;
-import com.projarq.vendas.dominio.interfRepositorios.IOrcamentoRepositorio;
+import com.projarq.vendas.dominio.portas.IOrcamentoRepositorio;
 
 @Service
 public class ServicoDeVendas {
