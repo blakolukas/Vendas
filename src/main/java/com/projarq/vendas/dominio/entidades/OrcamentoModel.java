@@ -1,12 +1,29 @@
 package com.projarq.vendas.dominio.entidades;
 
 import java.time.LocalDateTime;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn; // <--- LINHA ADICIONADA
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "orcamentos")
 public class OrcamentoModel {
-    private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "orcamento_id")
     private List<ItemPedidoModel> itens;
+
     private double custoItens;
     private double imposto;
     private double desconto;
@@ -15,34 +32,27 @@ public class OrcamentoModel {
     private String estado;
     private LocalDateTime dataCriacao;
 
-    public OrcamentoModel(long id) {
-        this.id = id;
-        this.itens = new LinkedList<>();
+    public OrcamentoModel() {
+        this.itens = new ArrayList<>();
         this.efetivado = false;
         this.dataCriacao = LocalDateTime.now();
     }
 
-    public OrcamentoModel(){
-        this.itens = new LinkedList<>();
-        this.efetivado = false;
-        this.dataCriacao = LocalDateTime.now();
-    }
-
-    public void addItensPedido(PedidoModel pedido){
-        for(ItemPedidoModel itemPedido:pedido.getItens()){
-            itens.add(itemPedido);
+    public void addItensPedido(PedidoModel pedido) {
+        for (ItemPedidoModel itemPedido : pedido.getItens()) {
+            this.itens.add(itemPedido);
         }
     }
 
-    public List<ItemPedidoModel> getItens(){
+    public List<ItemPedidoModel> getItens() {
         return itens;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id){
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -50,7 +60,7 @@ public class OrcamentoModel {
         return custoItens;
     }
 
-    public void setCustoItens(double custoItens){
+    public void setCustoItens(double custoItens) {
         this.custoItens = custoItens;
     }
 
@@ -58,7 +68,7 @@ public class OrcamentoModel {
         return imposto;
     }
 
-    public void setImposto(double imposto){
+    public void setImposto(double imposto) {
         this.imposto = imposto;
     }
 
@@ -66,7 +76,7 @@ public class OrcamentoModel {
         return desconto;
     }
 
-    public void setDesconto(double desconto){
+    public void setDesconto(double desconto) {
         this.desconto = desconto;
     }
 
@@ -74,7 +84,7 @@ public class OrcamentoModel {
         return custoConsumidor;
     }
 
-    public void setCustoConsumidor(double custoConsumidor){
+    public void setCustoConsumidor(double custoConsumidor) {
         this.custoConsumidor = custoConsumidor;
     }
 
@@ -82,7 +92,7 @@ public class OrcamentoModel {
         return efetivado;
     }
 
-    public void efetiva(){
+    public void efetiva() {
         efetivado = true;
     }
 

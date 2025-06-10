@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.projarq.vendas.dominio.entidades.ProdutoModel;
 import com.projarq.vendas.dominio.interfRepositorios.IEstoqueRepositorio;
-import com.projarq.vendas.dominio.interfRepositorios.IProdutoRepositorio;
+import com.projarq.vendas.dominio.interfRepositorios.IProdutoRepositorio; // Esta linha deve estar correta
 
 @Service
 public class ServicoDeEstoque {
@@ -35,7 +35,7 @@ public class ServicoDeEstoque {
         estoque.baixaEstoque(id, qtdade);
     }
 
-    public void entradaEstoque(long id, int qtdade) { // <--- NOVO MÉTODO
+    public void entradaEstoque(long id, int qtdade) {
         estoque.entradaEstoque(id, qtdade);
     }
 }

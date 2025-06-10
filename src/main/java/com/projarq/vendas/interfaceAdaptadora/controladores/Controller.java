@@ -14,7 +14,7 @@ import com.projarq.vendas.aplicacao.casosDeUso.CriaOrcamentoUC;
 import com.projarq.vendas.aplicacao.casosDeUso.DispListaUC;
 import com.projarq.vendas.aplicacao.casosDeUso.EfetivaOrcamentoUC;
 import com.projarq.vendas.aplicacao.casosDeUso.EntradaEstoqueUC;
-import com.projarq.vendas.aplicacao.casosDeUso.ListarCatalogoProdutosUC; // <--- Importação adicionada
+import com.projarq.vendas.aplicacao.casosDeUso.ListarCatalogoProdutosUC;
 import com.projarq.vendas.aplicacao.casosDeUso.ListarOrcamentosEfetivadosUC;
 import com.projarq.vendas.aplicacao.casosDeUso.ProdDispQnt;
 import com.projarq.vendas.aplicacao.casosDeUso.ProdutosDisponiveisUC;
@@ -23,19 +23,21 @@ import com.projarq.vendas.aplicacao.dtos.IntervaloDatasDTO;
 import com.projarq.vendas.aplicacao.dtos.NovoOrcamentoRequest;
 import com.projarq.vendas.aplicacao.dtos.OrcamentoDTO;
 import com.projarq.vendas.aplicacao.dtos.ProdutoDTO;
+import com.projarq.vendas.aplicacao.dtos.ProdutoNomeQtdDTO;
 
 @RestController
 public class Controller {
-    private ListarOrcamentosEfetivadosUC listarOrcamentosEfetivados;
-    private ProdutosDisponiveisUC produtosDisponiveis;
-    private CriaOrcamentoUC criaOrcamento;
-    private EfetivaOrcamentoUC efetivaOrcamento;
-    private DispListaUC dispListaUC;
-    private ProdDispQnt prodDispQnt;
-    private EntradaEstoqueUC entradaEstoqueUC;
-    private ListarCatalogoProdutosUC listarCatalogoProdutosUC; // <--- Novo atributo
+    private final ListarOrcamentosEfetivadosUC listarOrcamentosEfetivados; // Adicionado 'final'
+    private final ProdutosDisponiveisUC produtosDisponiveis; // Adicionado 'final'
+    private final CriaOrcamentoUC criaOrcamento; // Adicionado 'final'
+    private final EfetivaOrcamentoUC efetivaOrcamento; // Adicionado 'final'
+    private final DispListaUC dispListaUC; // Adicionado 'final'
+    private final ProdDispQnt prodDispQnt; // Adicionado 'final'
+    private final EntradaEstoqueUC entradaEstoqueUC; // Adicionado 'final'
+    private final ListarCatalogoProdutosUC listarCatalogoProdutosUC; // Adicionado 'final'
 
-    // @Autowired
+    // @Autowired // Removido para manter a convenção de injeção de dependência via
+    // construtor do Spring Boot
     public Controller(ProdutosDisponiveisUC produtosDisponiveis,
             CriaOrcamentoUC criaOrcamento,
             EfetivaOrcamentoUC efetivaOrcamento,
@@ -43,7 +45,7 @@ public class Controller {
             ListarOrcamentosEfetivadosUC listarOrcamentosEfetivados,
             ProdDispQnt prodDispQnt,
             EntradaEstoqueUC entradaEstoqueUC,
-            ListarCatalogoProdutosUC listarCatalogoProdutosUC) { // <--- Adicionado ao construtor
+            ListarCatalogoProdutosUC listarCatalogoProdutosUC) {
 
         this.produtosDisponiveis = produtosDisponiveis;
         this.criaOrcamento = criaOrcamento;
@@ -52,7 +54,7 @@ public class Controller {
         this.listarOrcamentosEfetivados = listarOrcamentosEfetivados;
         this.prodDispQnt = prodDispQnt;
         this.entradaEstoqueUC = entradaEstoqueUC;
-        this.listarCatalogoProdutosUC = listarCatalogoProdutosUC; // <--- Inicialização do novo atributo
+        this.listarCatalogoProdutosUC = listarCatalogoProdutosUC;
     }
 
     @GetMapping("")
@@ -63,14 +65,20 @@ public class Controller {
 
     @GetMapping("produtos")
     @CrossOrigin(origins = "*")
-    public List<ProdutoDTO> produtos() { // <--- Retorna ProdutoDTO agora
-        return listarCatalogoProdutosUC.run(); // <--- Chamada ao novo UC
+    public List<ProdutoDTO> produtos() {
+        return listarCatalogoProdutosUC.run();
     }
 
     @GetMapping("estoque")
     @CrossOrigin(origins = "*")
     public List<ProdutoDTO> produtosDisponiveis() {
         return produtosDisponiveis.run();
+    }
+
+    @GetMapping("estoque/quantidades")
+    @CrossOrigin(origins = "*")
+    public List<ProdutoNomeQtdDTO> produtosDisponiveisComQuantidade() {
+        return prodDispQnt.run();
     }
 
     @PostMapping("novoOrcamento")
@@ -85,15 +93,12 @@ public class Controller {
         return efetivaOrcamento.run(idOrcamento);
     }
 
-    // retornar a quantidade disponível para uma lista de itens em estoque
     @GetMapping("estoqueLista")
     @CrossOrigin(origins = "*")
     public List<ProdutoDTO> produtosEstoque(@RequestParam List<Long> ids) {
         return dispListaUC.run(ids);
     }
 
-    // Retornar a lista de orçamentos efetivados em um determinado período (informar
-    // data inicial e data final)
     @PostMapping("orcamentos/periodoPeriodo")
     @CrossOrigin(origins = "*")
     public List<OrcamentoDTO> orcamentosPeriodo(@RequestBody IntervaloDatasDTO datas) {

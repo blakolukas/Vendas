@@ -5,18 +5,18 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.projarq.vendas.aplicacao.dtos.ProdutoDTO;
-import com.projarq.vendas.dominio.interfRepositorios.IProdutoRepositorio; // <--- Importação adicionada
+import com.projarq.vendas.dominio.interfRepositorios.IProdutoRepositorio;
 
 @Component
 public class ListarCatalogoProdutosUC {
-    private IProdutoRepositorio produtoRepositorio; // <--- Novo atributo
+    private final IProdutoRepositorio produtoRepositorio; // <--- Adicionado 'final'
 
-    public ListarCatalogoProdutosUC(IProdutoRepositorio produtoRepositorio) { // <--- Injeção
+    public ListarCatalogoProdutosUC(IProdutoRepositorio produtoRepositorio) {
         this.produtoRepositorio = produtoRepositorio;
     }
 
     public List<ProdutoDTO> run() {
-        return produtoRepositorio.todos().stream() // Acessa todos os produtos do repositório
+        return produtoRepositorio.todos().stream()
                 .map(ProdutoDTO::fromModel)
                 .toList();
     }

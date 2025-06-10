@@ -5,9 +5,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class PedidoModel {
-    private long id;
-    private String estado;
-    private List<ItemPedidoModel> itens;
+    private final long id; // <--- Adicionado 'final'
+    private final String estado; // <--- Adicionado 'final'
+    private final List<ItemPedidoModel> itens; // <--- Adicionado 'final'
 
     public PedidoModel(long id, String estado) {
         this.id = id;
@@ -24,10 +24,10 @@ public class PedidoModel {
     }
 
     public List<ItemPedidoModel> getItens() {
-        return new ArrayList<ItemPedidoModel>(itens);
+        return new ArrayList<>(itens); // <--- Usado o operador diamante '<>'
     }
 
-    public void addItem(ItemPedidoModel item){
+    public void addItem(ItemPedidoModel item) {
         itens.add(item);
     }
 }

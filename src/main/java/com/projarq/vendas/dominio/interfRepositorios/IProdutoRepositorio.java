@@ -6,5 +6,6 @@ import com.projarq.vendas.dominio.entidades.ProdutoModel;
 
 public interface IProdutoRepositorio {
     List<ProdutoModel> todos();
+
     ProdutoModel consultaPorId(long codigo);
 }
