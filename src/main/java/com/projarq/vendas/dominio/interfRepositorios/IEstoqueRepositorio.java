@@ -6,7 +6,12 @@ import com.projarq.vendas.dominio.entidades.ProdutoModel;
 
 public interface IEstoqueRepositorio {
     List<ProdutoModel> todos();
+
     List<ProdutoModel> todosComEstoque();
+
     int quantidadeEmEstoque(long codigo);
+
     void baixaEstoque(long codProd, int qtdade);
+
+    void entradaEstoque(long codProd, int qtdade); // <--- LINHA ADICIONADA
 }

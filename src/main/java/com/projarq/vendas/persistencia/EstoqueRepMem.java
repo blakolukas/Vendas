@@ -3,7 +3,6 @@ package com.projarq.vendas.persistencia;
 import java.util.LinkedList;
 import java.util.List;
 
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -12,13 +11,15 @@ import com.projarq.vendas.dominio.entidades.ProdutoModel;
 import com.projarq.vendas.dominio.interfRepositorios.IEstoqueRepositorio;
 import com.projarq.vendas.dominio.interfRepositorios.IProdutoRepositorio;
 
+import jakarta.annotation.PostConstruct;
+
 @Repository
 public class EstoqueRepMem implements IEstoqueRepositorio {
     private List<ItemDeEstoqueModel> itens;
     private IProdutoRepositorio produtos;
 
     @Autowired
-    public EstoqueRepMem(IProdutoRepositorio produtos){
+    public EstoqueRepMem(IProdutoRepositorio produtos) {
         System.out.println("EstoqueRepMem construído (sem itens ainda)");
         this.produtos = produtos;
         this.itens = new LinkedList<>();
@@ -80,6 +81,21 @@ public class EstoqueRepMem implements IEstoqueRepositorio {
         }
 
         int novaQuantidade = item.getQuantidade() - qtdade;
+        item.setQuantidade(novaQuantidade);
+    }
+
+    @Override
+    public void entradaEstoque(long id, int qtdade) { // <--- NOVO MÉTODO
+        ItemDeEstoqueModel item = itens.stream()
+                .filter(it -> it.getProduto().getId() == id)
+                .findAny()
+                .orElse(null);
+
+        if (item == null) {
+            throw new IllegalArgumentException("Produto inexistente no estoque. Adicione-o ao catálogo primeiro.");
+        }
+
+        int novaQuantidade = item.getQuantidade() + qtdade;
         item.setQuantidade(novaQuantidade);
     }
 }

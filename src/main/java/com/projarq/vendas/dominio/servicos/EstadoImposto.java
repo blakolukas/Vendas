@@ -4,8 +4,8 @@ import com.projarq.vendas.dominio.entidades.PedidoModel;
 
 public enum EstadoImposto {
     SP(new ImpostoSP()),
-    RS(new ImpostoRS());
-    // Adicione outros estados conforme necessário
+    RS(new ImpostoRS()),
+    PE(new ImpostoPE()); // <--- Adicionado Pernambuco
 
     private final ImpostoStrategy strategy;
 
