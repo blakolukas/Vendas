@@ -101,4 +101,15 @@ public class OrcamentoModel {
     public void setDataCriacao(LocalDateTime dataCriacao) {
         this.dataCriacao = dataCriacao;
     }
+
+    /**
+     * Verifica se o orçamento ainda é válido (menos de 21 dias desde a criação)
+     * @return true se o orçamento é válido, false caso contrário
+     */
+    public boolean isValido() {
+        if (dataCriacao == null) {
+            return false;
+        }
+        return dataCriacao.toLocalDate().isAfter(java.time.LocalDate.now().minusDays(21));
+    }
 }
