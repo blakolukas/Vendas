@@ -4,9 +4,24 @@ import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "orcamentos")
 public class OrcamentoModel {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    
+    @OneToMany(mappedBy = "orcamento", cascade = CascadeType.ALL)
     private List<ItemPedidoModel> itens;
+    
     private double custoItens;
     private double imposto;
     private double desconto;
@@ -30,6 +45,7 @@ public class OrcamentoModel {
 
     public void addItensPedido(PedidoModel pedido){
         for(ItemPedidoModel itemPedido:pedido.getItens()){
+            itemPedido.setOrcamento(this);
             itens.add(itemPedido);
         }
     }

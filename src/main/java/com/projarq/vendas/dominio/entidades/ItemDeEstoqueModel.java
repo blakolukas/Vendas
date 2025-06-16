@@ -1,8 +1,24 @@
 package com.projarq.vendas.dominio.entidades;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "itens_estoque")
 public class ItemDeEstoqueModel{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    
+    @ManyToOne
+    @JoinColumn(name = "produto_id")
     private ProdutoModel produto;
+    
     private int quantidade;
     private int estoqueMin;
     private int estoqueMax;

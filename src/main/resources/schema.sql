@@ -1,0 +1,7 @@
+DROP TABLE IF EXISTS produtos CASCADE;
+
+CREATE TABLE produtos (
+    id BIGSERIAL PRIMARY KEY,
+    descricao VARCHAR(255) NOT NULL,
+    preco_unitario DOUBLE PRECISION NOT NULL
+); 

@@ -2,6 +2,7 @@ package com.projarq.vendas.interfaceAdaptadora.controladores;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +21,8 @@ import com.projarq.vendas.aplicacao.dtos.IntervaloDatasDTO;
 import com.projarq.vendas.aplicacao.dtos.NovoOrcamentoRequest;
 import com.projarq.vendas.aplicacao.dtos.OrcamentoDTO;
 import com.projarq.vendas.aplicacao.dtos.ProdutoDTO;
-
+import com.projarq.vendas.dominio.entidades.ProdutoModel;
+import com.projarq.vendas.dominio.interfRepositorios.IRepositorioProdutos;
 
 @RestController
 public class Controller {
@@ -30,6 +32,9 @@ public class Controller {
     private EfetivaOrcamentoUC efetivaOrcamento;
     private DispListaUC dispListaUC;
     private ProdDispQnt prodDispQnt;
+
+    @Autowired
+    private IRepositorioProdutos repositorioProdutos;
 
     //@Autowired
     public Controller(ProdutosDisponiveisUC produtosDisponiveis,
@@ -55,8 +60,14 @@ public class Controller {
 
     @GetMapping("produtos")
     @CrossOrigin(origins = "*")
-    public List<String> produtos(){
-        return dispListaUC.run();
+    public List<ProdutoModel> produtos(){
+        return repositorioProdutos.findAll();
+    }
+
+    @PostMapping("produtos")
+    @CrossOrigin(origins = "*")
+    public ProdutoModel criarProduto(@RequestBody ProdutoModel produto) {
+        return repositorioProdutos.save(produto);
     }
 
     @GetMapping("estoque")
