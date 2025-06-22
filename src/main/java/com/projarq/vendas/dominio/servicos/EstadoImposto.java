@@ -1,19 +1,27 @@
 package com.projarq.vendas.dominio.servicos;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.projarq.vendas.dominio.entidades.PedidoModel;
 
-public enum EstadoImposto {
-    SP(new ImpostoSP()),
-    RS(new ImpostoRS());
-    // Adicione outros estados conforme necessário
-
-    private final ImpostoStrategy strategy;
-
-    EstadoImposto(ImpostoStrategy strategy) {
-        this.strategy = strategy;
+@Component
+public class EstadoImposto {
+    
+    private static RemoteTaxStrategy remoteTaxStrategy;
+    
+    @Autowired
+    public void setRemoteTaxStrategy(RemoteTaxStrategy remoteTaxStrategy) {
+        EstadoImposto.remoteTaxStrategy = remoteTaxStrategy;
     }
-
-    public double calcularImposto(double valorBase, PedidoModel pedido) {
-        return strategy.calcularImposto(valorBase, pedido);
+    
+    public static double calcularImposto(String estado, double valorBase, PedidoModel pedido) {
+        if (remoteTaxStrategy == null) {
+            // Fallback to default calculation if RemoteTaxStrategy is not available
+            return valorBase * 0.1;
+        }
+        
+        // Use the remote strategy for all states
+        return remoteTaxStrategy.calcularImposto(valorBase, pedido);
     }
 }
