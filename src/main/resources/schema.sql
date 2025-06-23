@@ -35,9 +35,9 @@ CREATE TABLE itens_estoque (
 );
 
 CREATE TABLE itens_pedido (
+    id BIGSERIAL PRIMARY KEY,
     pedido_id BIGINT REFERENCES pedidos(id),
     produto_id BIGINT REFERENCES produtos(id),
     orcamento_id BIGINT REFERENCES orcamentos(id),
-    quantidade INTEGER,
-    PRIMARY KEY (pedido_id, produto_id)
+    quantidade INTEGER
 ); 

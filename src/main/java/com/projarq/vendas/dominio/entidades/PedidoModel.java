@@ -19,8 +19,12 @@ public class PedidoModel {
     private long id;
     private String estado;
     
-    @OneToMany(mappedBy = "pedido")
+    @OneToMany(mappedBy = "pedido", cascade = jakarta.persistence.CascadeType.ALL)
     private List<ItemPedidoModel> itens;
+
+    public PedidoModel() {
+        this.itens = new LinkedList<>();
+    }
 
     public PedidoModel(long id, String estado) {
         this.id = id;
@@ -32,8 +36,16 @@ public class PedidoModel {
         return id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public String getEstado() {
         return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public List<ItemPedidoModel> getItens() {
@@ -41,6 +53,7 @@ public class PedidoModel {
     }
 
     public void addItem(ItemPedidoModel item){
+        item.setPedido(this);
         itens.add(item);
     }
 }

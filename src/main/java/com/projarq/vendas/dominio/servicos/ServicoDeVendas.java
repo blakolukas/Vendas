@@ -1,6 +1,9 @@
 package com.projarq.vendas.dominio.servicos;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.projarq.vendas.dominio.entidades.ItemPedidoModel;
 import com.projarq.vendas.dominio.entidades.OrcamentoModel;
@@ -27,9 +30,11 @@ public class ServicoDeVendas {
     // }
 
     public OrcamentoModel recuperaOrcamentoPorId(long id) {
-        return this.orcamentos.recuperaPorId(id);
+        Optional<OrcamentoModel> orcamento = this.orcamentos.findById(id);
+        return orcamento.orElse(null);
     }
 
+    @Transactional
     public OrcamentoModel criaOrcamento(PedidoModel pedido) {
         var novoOrcamento = new OrcamentoModel();
         novoOrcamento.addItensPedido(pedido);
@@ -55,12 +60,17 @@ public class ServicoDeVendas {
 
         novoOrcamento.setDesconto(desconto);
         novoOrcamento.setCustoConsumidor(custoItens + novoOrcamento.getImposto() - desconto);
-        return this.orcamentos.cadastra(novoOrcamento);
+        return this.orcamentos.save(novoOrcamento);
     }
  
+    @Transactional
     public OrcamentoModel efetivaOrcamento(long id) {
         // Recupera o orçamento
-        var orcamento = this.orcamentos.recuperaPorId(id);
+        var orcamento = this.orcamentos.findById(id).orElse(null);
+        if (orcamento == null) {
+            return null;
+        }
+        
         var ok = true;
         // Verifica se tem quantidade em estoque para todos os itens
         for (ItemPedidoModel itemPedido:orcamento.getItens()) {
@@ -88,6 +98,6 @@ public class ServicoDeVendas {
             orcamentos.marcaComoEfetivado(id);
         }
         // Retorna o orçamento marcado como efetivado ou não conforme disponibilidade do estoque
-        return orcamentos.recuperaPorId(id);
+        return orcamentos.findById(id).orElse(null);
     }
 }

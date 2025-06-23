@@ -1,6 +1,8 @@
 package com.projarq.vendas.dominio.entidades;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -10,11 +12,13 @@ import jakarta.persistence.Table;
 @Table(name = "itens_pedido")
 public class ItemPedidoModel {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
     @ManyToOne
     @JoinColumn(name = "pedido_id")
     private PedidoModel pedido;
     
-    @Id
     @ManyToOne
     @JoinColumn(name = "produto_id")
     private ProdutoModel produto;
@@ -25,9 +29,19 @@ public class ItemPedidoModel {
     
     private int quantidade;
     
+    public ItemPedidoModel() {}
+    
     public ItemPedidoModel(ProdutoModel produto, int quantidade) {
         this.produto = produto;
         this.quantidade = quantidade;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public ProdutoModel getProduto() {
@@ -60,6 +74,6 @@ public class ItemPedidoModel {
 
     @Override
     public String toString() {
-        return "ItemPedido [produto=" + produto + ", quantidade=" + quantidade + "]";
+        return "ItemPedido [id=" + id + ", produto=" + produto + ", quantidade=" + quantidade + "]";
     }
 }
