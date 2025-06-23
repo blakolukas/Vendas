@@ -3,7 +3,6 @@ package com.projarq.vendas.persistencia;
 import java.util.LinkedList;
 import java.util.List;
 
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +11,7 @@ import com.projarq.vendas.dominio.entidades.ProdutoModel;
 import com.projarq.vendas.dominio.interfRepositorios.IEstoqueRepositorio;
 import com.projarq.vendas.dominio.interfRepositorios.IProdutoRepositorio;
 
-@Repository
+//@Repository
 public class EstoqueRepMem implements IEstoqueRepositorio {
     private List<ItemDeEstoqueModel> itens;
     private IProdutoRepositorio produtos;
@@ -22,24 +21,6 @@ public class EstoqueRepMem implements IEstoqueRepositorio {
         System.out.println("EstoqueRepMem construído (sem itens ainda)");
         this.produtos = produtos;
         this.itens = new LinkedList<>();
-    }
-
-    @PostConstruct
-    public void init() {
-        System.out.println("Inicializando estoque com produtos...");
-
-        ProdutoModel p = produtos.consultaPorId(10);
-        System.out.println("Produto 10: " + p);
-        itens.add(new ItemDeEstoqueModel(100, p, 20, 5, 50));
-
-        p = produtos.consultaPorId(20);
-        itens.add(new ItemDeEstoqueModel(200, p, 15, 5, 50));
-
-        p = produtos.consultaPorId(40);
-        itens.add(new ItemDeEstoqueModel(400, p, 25, 10, 100));
-
-        p = produtos.consultaPorId(50);
-        itens.add(new ItemDeEstoqueModel(500, p, 23, 5, 40));
     }
 
     @Override

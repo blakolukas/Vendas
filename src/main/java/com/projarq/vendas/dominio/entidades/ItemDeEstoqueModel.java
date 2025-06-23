@@ -10,20 +10,22 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "itens_estoque")
-public class ItemDeEstoqueModel{
+public class ItemDeEstoqueModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    
+    private Long id;
+
     @ManyToOne
     @JoinColumn(name = "produto_id")
     private ProdutoModel produto;
-    
+
     private int quantidade;
     private int estoqueMin;
     private int estoqueMax;
 
-    public ItemDeEstoqueModel(long id, ProdutoModel produto, int quantidade, int estoqueMin, int estoqueMax) {
+    public ItemDeEstoqueModel() {}
+
+    public ItemDeEstoqueModel(Long id, ProdutoModel produto, int quantidade, int estoqueMin, int estoqueMax) {
         this.id = id;
         this.produto = produto;
         this.quantidade = quantidade;
@@ -31,37 +33,16 @@ public class ItemDeEstoqueModel{
         this.estoqueMax = estoqueMax;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public ProdutoModel getProduto() {
-        return produto;
-    }
-
-    public int getQuantidade() {
-        return quantidade;
-    }
-
-    public int getEstoqueMin() {
-        return estoqueMin;
-    }
-
-    public int getEstoqueMax() {
-        return estoqueMax;
-    }
-
-    public void setQuantidade(int quantidade) {
-        this.quantidade = quantidade;
-    }
-
-    public void setEstoqueMin(int estoqueMin) {
-        this.estoqueMin = estoqueMin;
-    }
-
-    public void setEstoqueMax(int estoqueMax) {
-        this.estoqueMax = estoqueMax;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public ProdutoModel getProduto() { return produto; }
+    public void setProduto(ProdutoModel produto) { this.produto = produto; }
+    public int getQuantidade() { return quantidade; }
+    public void setQuantidade(int quantidade) { this.quantidade = quantidade; }
+    public int getEstoqueMin() { return estoqueMin; }
+    public void setEstoqueMin(int estoqueMin) { this.estoqueMin = estoqueMin; }
+    public int getEstoqueMax() { return estoqueMax; }
+    public void setEstoqueMax(int estoqueMax) { this.estoqueMax = estoqueMax; }
 
     @Override
     public String toString() {

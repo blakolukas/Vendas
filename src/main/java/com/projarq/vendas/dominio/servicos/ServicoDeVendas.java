@@ -1,13 +1,10 @@
 package com.projarq.vendas.dominio.servicos;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 
 import com.projarq.vendas.dominio.entidades.ItemPedidoModel;
 import com.projarq.vendas.dominio.entidades.OrcamentoModel;
 import com.projarq.vendas.dominio.entidades.PedidoModel;
-import com.projarq.vendas.dominio.entidades.ProdutoModel;
 import com.projarq.vendas.dominio.interfRepositorios.IEstoqueRepositorio;
 import com.projarq.vendas.dominio.interfRepositorios.IOrcamentoRepositorio;
 
@@ -15,16 +12,19 @@ import com.projarq.vendas.dominio.interfRepositorios.IOrcamentoRepositorio;
 public class ServicoDeVendas {
     private final IOrcamentoRepositorio orcamentos;
     private final IEstoqueRepositorio estoque;
+    private final ServicoDeEstoque servicoDeEstoque;
 
     //@Autowired
-    public ServicoDeVendas(IOrcamentoRepositorio orcamentos,IEstoqueRepositorio estoque){
+    public ServicoDeVendas(IOrcamentoRepositorio orcamentos, IEstoqueRepositorio estoque, ServicoDeEstoque servicoDeEstoque){
         this.orcamentos = orcamentos;
         this.estoque = estoque;
+        this.servicoDeEstoque = servicoDeEstoque;
     }
      
-    public List<ProdutoModel> produtosDisponiveis() {
-        return estoque.todosComEstoque();
-    }
+    // Remover método produtosDisponiveis, pois não é mais utilizado e chama método inexistente
+    // public List<ProdutoModel> produtosDisponiveis() {
+    //     return estoque.todosComEstoque();
+    // }
 
     public OrcamentoModel recuperaOrcamentoPorId(long id) {
         return this.orcamentos.recuperaPorId(id);
@@ -64,7 +64,7 @@ public class ServicoDeVendas {
         var ok = true;
         // Verifica se tem quantidade em estoque para todos os itens
         for (ItemPedidoModel itemPedido:orcamento.getItens()) {
-            int qtdade = estoque.quantidadeEmEstoque(itemPedido.getProduto().getId());
+            int qtdade = servicoDeEstoque.qtdadeEmEstoque(itemPedido.getProduto().getId());
             if (qtdade < itemPedido.getQuantidade()) {
                 ok = false;
                 break;
@@ -76,13 +76,12 @@ public class ServicoDeVendas {
             System.out.println("Orçamento com mais de 21 dias não pode ser efetivado.");
         }
 
-
         // Se tem quantidade para todos os itens, da baixa no estoque para todos
         if (ok) {
             for (ItemPedidoModel itemPedido:orcamento.getItens()) {
-                int qtdade = estoque.quantidadeEmEstoque(itemPedido.getProduto().getId());
+                int qtdade = servicoDeEstoque.qtdadeEmEstoque(itemPedido.getProduto().getId());
                 if (qtdade >= itemPedido.getQuantidade()) {
-                    estoque.baixaEstoque(itemPedido.getProduto().getId(), itemPedido.getQuantidade());
+                    servicoDeEstoque.baixaEstoque(itemPedido.getProduto().getId(), itemPedido.getQuantidade());
                 }
             }
             // Marca o orcamento como efetivado

@@ -2,11 +2,13 @@ package com.projarq.vendas.dominio.interfRepositorios;
 
 import java.util.List;
 
-import com.projarq.vendas.dominio.entidades.ProdutoModel;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface IEstoqueRepositorio {
-    List<ProdutoModel> todos();
-    List<ProdutoModel> todosComEstoque();
-    int quantidadeEmEstoque(long codigo);
-    void baixaEstoque(long codProd, int qtdade);
+import com.projarq.vendas.dominio.entidades.ItemDeEstoqueModel;
+
+@Repository
+public interface IEstoqueRepositorio extends JpaRepository<ItemDeEstoqueModel, Long> {
+    List<ItemDeEstoqueModel> findByQuantidadeGreaterThan(int quantidade);
+    ItemDeEstoqueModel findByProdutoId(Long produtoId);
 }

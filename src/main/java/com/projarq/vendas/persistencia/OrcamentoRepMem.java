@@ -89,5 +89,7 @@ public class OrcamentoRepMem implements IOrcamentoRepositorio{
             throw new IllegalArgumentException("Orcamento não encontrado");
         }
         orcamento.efetiva();
+        // Força atualização na lista (não necessário para lista, mas útil para debug)
+        System.out.println("Orçamento " + id + " efetivado: " + orcamento.isEfetivado());
     }
 }

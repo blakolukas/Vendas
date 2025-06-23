@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.projarq.vendas.dominio.entidades.ItemDeEstoqueModel;
 import com.projarq.vendas.dominio.entidades.ProdutoModel;
 import com.projarq.vendas.dominio.interfRepositorios.IEstoqueRepositorio;
 import com.projarq.vendas.dominio.interfRepositorios.IProdutoRepositorio;
@@ -20,18 +21,27 @@ public class ServicoDeEstoque{
     }
  
     public List<ProdutoModel> produtosDisponiveis(){
-        return estoque.todosComEstoque();
+        return estoque.findByQuantidadeGreaterThan(0)
+                .stream()
+                .map(ItemDeEstoqueModel::getProduto)
+                .toList();
     }
 
     public ProdutoModel produtoPorCodigo(long id){
-        return this.produtos.consultaPorId(id);
+        ItemDeEstoqueModel item = estoque.findByProdutoId(id);
+        return item != null ? item.getProduto() : null;
     }
 
     public int qtdadeEmEstoque(long id){
-        return estoque.quantidadeEmEstoque(id);
+        ItemDeEstoqueModel item = estoque.findByProdutoId(id);
+        return item != null ? item.getQuantidade() : 0;
     }
 
     public void baixaEstoque(long id,int qtdade){
-        estoque.baixaEstoque(id,qtdade);
+        ItemDeEstoqueModel item = estoque.findByProdutoId(id);
+        if (item == null) throw new IllegalArgumentException("Produto inexistente");
+        if (item.getQuantidade() < qtdade) throw new IllegalArgumentException("Quantidade em estoque insuficiente");
+        item.setQuantidade(item.getQuantidade() - qtdade);
+        estoque.save(item);
     }  
 }

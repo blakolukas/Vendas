@@ -21,6 +21,7 @@ import com.projarq.vendas.aplicacao.dtos.IntervaloDatasDTO;
 import com.projarq.vendas.aplicacao.dtos.NovoOrcamentoRequest;
 import com.projarq.vendas.aplicacao.dtos.OrcamentoDTO;
 import com.projarq.vendas.aplicacao.dtos.ProdutoDTO;
+import com.projarq.vendas.aplicacao.dtos.ProdutoNomeQtdDTO;
 import com.projarq.vendas.dominio.entidades.ProdutoModel;
 import com.projarq.vendas.dominio.interfRepositorios.IRepositorioProdutos;
 
@@ -72,8 +73,8 @@ public class Controller {
 
     @GetMapping("estoque")
     @CrossOrigin(origins = "*")
-    public List<ProdutoDTO> produtosDisponiveis(){
-        return produtosDisponiveis.run();
+    public List<ProdutoNomeQtdDTO> produtosDisponiveis() {
+        return prodDispQnt.run();
     }
 
     @PostMapping("novoOrcamento")
@@ -82,7 +83,7 @@ public class Controller {
         return criaOrcamento.run(request.getItens(), request.getEstado());
     }
 
-    @GetMapping("efetivaOrcamento/{id}")
+    @PostMapping("orcamentos/{id}/efetivar")
     @CrossOrigin(origins = "*")
     public OrcamentoDTO efetivaOrcamento(@PathVariable(value="id") long idOrcamento){
         return efetivaOrcamento.run(idOrcamento);
@@ -96,10 +97,22 @@ public class Controller {
     }
 
     //Retornar a lista de orçamentos efetivados em um determinado período (informar data inicial e data final)
-    @PostMapping("orcamentos/periodoPeriodo")
+    @GetMapping("orcamentos")
     @CrossOrigin(origins = "*")
-    public List<OrcamentoDTO> orcamentosPeriodo(@RequestBody IntervaloDatasDTO datas) {
+    public List<OrcamentoDTO> orcamentosPeriodo(
+        @RequestParam String dataInicial,
+        @RequestParam String dataFinal
+    ) {
+        IntervaloDatasDTO datas = new IntervaloDatasDTO();
+        datas.setDataInicial(dataInicial);
+        datas.setDataFinal(dataFinal);
         return listarOrcamentosEfetivados.run(datas);
+    }
+
+    @GetMapping("orcamentos/todos")
+    @CrossOrigin(origins = "*")
+    public List<OrcamentoDTO> listarTodosOrcamentos() {
+        return listarOrcamentosEfetivados.getTodos();
     }
 
 }

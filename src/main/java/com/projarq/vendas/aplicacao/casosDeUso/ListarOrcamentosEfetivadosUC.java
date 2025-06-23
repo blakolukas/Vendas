@@ -1,13 +1,14 @@
 package com.projarq.vendas.aplicacao.casosDeUso;
 
+import java.time.LocalDate;
+import java.util.List;
+
+import org.springframework.stereotype.Component;
+
 import com.projarq.vendas.aplicacao.dtos.IntervaloDatasDTO;
 import com.projarq.vendas.aplicacao.dtos.OrcamentoDTO;
 import com.projarq.vendas.dominio.entidades.OrcamentoModel;
 import com.projarq.vendas.dominio.interfRepositorios.IOrcamentoRepositorio;
-import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @Component
 public class ListarOrcamentosEfetivadosUC {
@@ -27,6 +28,12 @@ public class ListarOrcamentosEfetivadosUC {
                     LocalDate data = o.getDataCriacao().toLocalDate();
                     return (!data.isBefore(inicio)) && (!data.isAfter(fim));
                 })
+                .map(OrcamentoDTO::fromModel)
+                .toList();
+    }
+
+    public List<OrcamentoDTO> getTodos() {
+        return orcamentos.todos().stream()
                 .map(OrcamentoDTO::fromModel)
                 .toList();
     }
