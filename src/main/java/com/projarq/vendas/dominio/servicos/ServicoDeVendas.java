@@ -41,9 +41,8 @@ public class ServicoDeVendas {
         // Aplica imposto por estado usando enum
         double imposto = 0.0;
         try {
-            EstadoImposto estado = EstadoImposto.valueOf(pedido.getEstado());
-            imposto = estado.calcularImposto(custoItens, pedido);
-        } catch (IllegalArgumentException e) {
+            imposto = EstadoImposto.calcularImposto(pedido.getEstado(), custoItens, pedido);
+        } catch (Exception e) {
             imposto = custoItens * 0.1;
         }
         novoOrcamento.setEstado(pedido.getEstado());
