@@ -1,7 +1,5 @@
 package com.projarq.vendas.dominio.interfRepositorios;
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -13,9 +11,6 @@ import com.projarq.vendas.dominio.entidades.OrcamentoModel;
 
 @Repository
 public interface IOrcamentoRepositorio extends JpaRepository<OrcamentoModel, Long> {
-    
-    @Query("SELECT o FROM OrcamentoModel o")
-    List<OrcamentoModel> todos();
     
     @Modifying
     @Transactional

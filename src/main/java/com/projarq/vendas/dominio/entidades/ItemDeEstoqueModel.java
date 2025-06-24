@@ -1,5 +1,6 @@
 package com.projarq.vendas.dominio.entidades;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,8 +20,13 @@ public class ItemDeEstoqueModel {
     @JoinColumn(name = "produto_id")
     private ProdutoModel produto;
 
+    @Column(name = "quantidade")
     private int quantidade;
+    
+    @Column(name = "estoque_min")
     private int estoqueMin;
+    
+    @Column(name = "estoque_max")
     private int estoqueMax;
 
     public ItemDeEstoqueModel() {}

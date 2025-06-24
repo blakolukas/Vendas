@@ -22,7 +22,7 @@ public class ListarOrcamentosEfetivadosUC {
         LocalDate inicio = LocalDate.parse(datas.getDataInicial());
         LocalDate fim = LocalDate.parse(datas.getDataFinal());
 
-        return orcamentos.todos().stream()
+        return orcamentos.findAll().stream()
                 .filter(OrcamentoModel::isEfetivado)
                 .filter(o -> {
                     LocalDate data = o.getDataCriacao().toLocalDate();
@@ -33,7 +33,7 @@ public class ListarOrcamentosEfetivadosUC {
     }
 
     public List<OrcamentoDTO> getTodos() {
-        return orcamentos.todos().stream()
+        return orcamentos.findAll().stream()
                 .map(OrcamentoDTO::fromModel)
                 .toList();
     }

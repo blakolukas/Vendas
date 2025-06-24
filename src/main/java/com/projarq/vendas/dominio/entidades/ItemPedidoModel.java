@@ -1,5 +1,7 @@
 package com.projarq.vendas.dominio.entidades;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,7 +17,7 @@ public class ItemPedidoModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "pedido_id")
     private PedidoModel pedido;
     
@@ -27,6 +29,7 @@ public class ItemPedidoModel {
     @JoinColumn(name = "orcamento_id")
     private OrcamentoModel orcamento;
     
+    @Column(name = "quantidade")
     private int quantidade;
     
     public ItemPedidoModel() {}

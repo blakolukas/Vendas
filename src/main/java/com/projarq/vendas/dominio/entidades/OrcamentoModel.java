@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,12 +23,25 @@ public class OrcamentoModel {
     @OneToMany(mappedBy = "orcamento", cascade = CascadeType.ALL)
     private List<ItemPedidoModel> itens;
     
+    @Column(name = "custo_itens")
     private double custoItens;
+    
+    @Column(name = "imposto")
     private double imposto;
+    
+    @Column(name = "desconto")
     private double desconto;
+    
+    @Column(name = "custo_consumidor")
     private double custoConsumidor;
+    
+    @Column(name = "efetivado")
     private boolean efetivado;
+    
+    @Column(name = "estado")
     private String estado;
+    
+    @Column(name = "data_criacao")
     private LocalDateTime dataCriacao;
 
     public OrcamentoModel(long id) {

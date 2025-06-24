@@ -1,5 +1,6 @@
 package com.projarq.vendas.dominio.entidades;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,7 +13,11 @@ public class ProdutoModel{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    
+    @Column(name = "descricao")
     private String descricao;
+    
+    @Column(name = "preco_unitario")
     private double precoUnitario;
 
     public ProdutoModel() {
